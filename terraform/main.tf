@@ -25,14 +25,6 @@ resource "azurerm_resource_group" "rg-aula-infra" {
     name = "rg-aula-infra"
 }
 
-resource "azurerm_container_registry" "acr-aula-infra" {
-  name                = "aulainfraacr"
-  resource_group_name = azurerm_resource_group.rg-aula-infra.name
-  location            = azurerm_resource_group.rg-aula-infra.location
-  sku                 = "Basic"
-  admin_enabled       = false
-}
-
 resource "azurerm_kubernetes_cluster" "aks-aula-infra" {
   name                = "aks-aula-infra"
   location            = azurerm_resource_group.rg-aula-infra.location
@@ -65,13 +57,23 @@ resource "azurerm_kubernetes_cluster" "aks-aula-infra" {
   }
 }
 
-data "azuread_service_principal" "aks_principal" {
-    application_id = var.client
-}
+# Only necessary when you need a private container registry
 
-resource "azurerm_role_assignment" "acrpull-aula-infra" {
-  scope = azurerm_container_registry.acr-aula-infra.id
-  role_definition_name = "AcrPull"
-  principal_id = data.azuread_service_principal.aks_principal.id
-  skip_service_principal_aad_check = true
-}
+# resource "azurerm_container_registry" "acr-aula-infra" {
+#   name                = "aulainfraacr"
+#   resource_group_name = azurerm_resource_group.rg-aula-infra.name
+#   location            = azurerm_resource_group.rg-aula-infra.location
+#   sku                 = "Basic"
+#   admin_enabled       = false
+# }
+
+# data "azuread_service_principal" "aks_principal" {
+#     application_id = var.client
+# }
+
+# resource "azurerm_role_assignment" "acrpull-aula-infra" {
+#   scope = azurerm_container_registry.acr-aula-infra.id
+#   role_definition_name = "AcrPull"
+#   principal_id = data.azuread_service_principal.aks_principal.id
+#   skip_service_principal_aad_check = true
+# }
