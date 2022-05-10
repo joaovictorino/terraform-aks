@@ -12,13 +12,13 @@ provider "azurerm" {
     }
 }
 
-variable "client" {
+# variable "client" {
   
-}
+# }
 
-variable "secret" {
+# variable "secret" {
   
-}
+# }
 
 resource "azurerm_resource_group" "rg-aula-infra" {
     location = "eastus"
@@ -37,20 +37,26 @@ resource "azurerm_kubernetes_cluster" "aks-aula-infra" {
     vm_size    = "Standard_D2_v2"
   }
 
-  service_principal {
-    client_id = var.client
-    client_secret = var.secret
+  identity {
+    type = "SystemAssigned"
   }
 
-  role_based_access_control {
-    enabled = true
-  }
+  http_application_routing_enabled = true
 
-  addon_profile {
-    http_application_routing {
-      enabled = true
-    }
-  }
+  # service_principal {
+  #   client_id = var.client
+  #   client_secret = var.secret
+  # }
+
+  # role_based_access_control {
+  #   enabled = true
+  # }
+
+  # addon_profile {
+  #   http_application_routing {
+  #     enabled = true
+  #   }
+  # }
 
   tags = {
     Environment = "Production"
