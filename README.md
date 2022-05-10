@@ -18,3 +18,8 @@ Executar o Terraform
 ````sh
 terraform apply -auto-approve
 ````
+
+Adicionar credenciais do AKS no kubectl local
+````sh
+az aks get-credentials --resource-group rg-aula-infra --name aks-aula-infra
+````
