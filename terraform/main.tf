@@ -33,8 +33,4 @@ resource "azurerm_kubernetes_cluster" "aks-aula-infra" {
   identity {
     type = "SystemAssigned"
   }
-
-  tags = {
-    Environment = "Production"
-  }
 }
