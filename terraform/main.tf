@@ -44,3 +44,9 @@ resource "azurerm_kubernetes_cluster" "aks-aula-infra" {
   }
 }
 
+# Ensure the AKS control plane managed identity can create public load balancers in the node resource group.
+resource "azurerm_role_assignment" "aks_lb_network_contributor" {
+  scope                = azurerm_kubernetes_cluster.aks-aula-infra.node_resource_group_id
+  role_definition_name = "Network Contributor"
+  principal_id         = azurerm_kubernetes_cluster.aks-aula-infra.identity[0].principal_id
+}
